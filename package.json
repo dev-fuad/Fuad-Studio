@@ -1,0 +1,60 @@
+{
+  "name": "fuad-rn-studio",
+  "displayName": "Fuad RN Studio",
+  "description": "Helper for creating, updating and maintaining react-native projects.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "fuad-rn.create",
+        "title": "[Fuad] Create New Project"
+      }
+    ],
+    "configuration": {
+      "title": "Fuad RN Studio",
+      "properties": {
+        "fuad-rn.default-language": {
+          "type": "string",
+          "enum": ["js", "ts"],
+          "enumItemLabels": ["javascript", "typescript"],
+          "default": "ts",
+          "description": "Default language for creating projects"
+        },
+        "fuad-rn.path": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Specifies the folder path to create projects into."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.81.0",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "20.2.5",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "eslint": "^8.41.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.3",
+    "@vscode/test-electron": "^2.3.2"
+  }
+}
