@@ -1,0 +1,53 @@
+body {
+  background-color: transparent;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.row input {
+  margin: 0 var(--input-padding-horizontal);
+}
+
+.row button {
+  flex: 0;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.radio-group {
+  display: flex;
+
+  margin: var(--input-margin-vertical);
+}
+
+.radio-group .row {
+  flex: 1;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.radio-group input {
+  flex: 0;
+}
+
+.error {
+  display: none;
+  color: orangered;
+  font-size: smaller;
+}
+
+.show {
+  display: block;
+}
+
+@media only screen and (max-width: 250px) {
+  .radio-group {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+}

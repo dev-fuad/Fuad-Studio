@@ -1,6 +1,7 @@
 {
   "name": "fuad-rn-studio",
   "displayName": "Fuad RN Studio",
+  "icon": "assets/Fuad's Studio.ico",
   "description": "Helper for creating, updating and maintaining react-native projects.",
   "version": "0.0.1",
   "engines": {
@@ -15,25 +16,60 @@
     "commands": [
       {
         "command": "fuad-rn.create",
-        "title": "[Fuad] Create New Project"
+        "title": "[Fuad's Studio] Create New Project"
       }
     ],
     "configuration": {
       "title": "Fuad RN Studio",
       "properties": {
-        "fuad-rn.default-language": {
+        "fuad-rn.framework": {
           "type": "string",
-          "enum": ["js", "ts"],
-          "enumItemLabels": ["javascript", "typescript"],
-          "default": "ts",
-          "description": "Default language for creating projects"
+          "enum": ["react-native", "expo"],
+          "default": "react-native",
+          "description": "Framework to create app"
         },
         "fuad-rn.path": {
           "type": ["string", "null"],
           "default": null,
           "description": "Specifies the folder path to create projects into."
+        },
+        "fuad-rn.node": {
+          "type": ["string", "null"],
+          "default": "node",
+          "description": "Specifies the path to node to be used."
+        },
+        "fuad-rn.shell": {
+          "type": ["string", "null"],
+          "default": "bash",
+          "description": "Specifies the path to shell to be used."
         }
       }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "fuad-rn-studio",
+          "title": "Fuad's RN Studio",
+          "icon": "assets/Fuad's Studio.svg"
+        }
+      ]
+    },
+    "views": {
+      "fuad-rn-studio": [
+        {
+          "type": "webview",
+          "id": "fuadStudio-newProject",
+          "name": "New Project",
+          "icon": "assets/Fuad's Studio.svg",
+          "contextualTitle": "Fuad's RN Studio"
+        },
+        {
+          "id": "fuadStudio-template",
+          "name": "Fuad's RN Studio",
+          "icon": "assets/Fuad's Studio.svg",
+          "contextualTitle": "Fuad's RN Studio"
+        }
+      ]
     }
   },
   "scripts": {
