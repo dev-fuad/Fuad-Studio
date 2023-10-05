@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import onBrowse from './utils/browse';
 import initiateRNProject from './utils/initiateRNProject';
 
 export default class NewProjectProvider implements vscode.WebviewViewProvider {
@@ -7,8 +8,8 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
   private _view?: vscode.WebviewView;
 
   constructor(
-		private readonly _extensionUri: vscode.Uri,
-	) { }
+    private readonly _extensionUri: vscode.Uri,
+  ) { }
 
   resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -18,13 +19,13 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
     this._view = webviewView;
 
     webviewView.webview.options = {
-			// Allow scripts in the webview
-			enableScripts: true,
+      // Allow scripts in the webview
+      enableScripts: true,
 
-			localResourceRoots: [
-				this._extensionUri
-			]
-		};
+      localResourceRoots: [
+        this._extensionUri
+      ]
+    };
 
     const settings = vscode.workspace.getConfiguration('fuad-rn');
     let path: string = settings.get('path') ?? '~';
@@ -39,8 +40,10 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
             initiateRNProject(JSON.parse(message.text));
             return;
           case 'browse':
-            console.log('Browse');
+            onBrowse(webviewView);
             return;
+          default:
+            console.log('Unknown command', message);
         }
       },
     );
@@ -49,16 +52,16 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
   private _getHtmlForWebview(webview: vscode.Webview, { path, framework }: { path: string, framework: string }) {
     const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'web', 'main.js'));
 
-		// Do the same for the stylesheet.
-		const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'web', 'reset.css'));
-		const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'web', 'vscode.css'));
-		const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'web', 'main.css'));
+    // Do the same for the stylesheet.
+    const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'web', 'reset.css'));
+    const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'web', 'vscode.css'));
+    const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'web', 'main.css'));
 
     const reactNativeCheck = framework === 'react-native' ? 'checked' : '';
     const expoCheck = framework === 'expo' ? 'checked' : '';
 
-		// Use a nonce to only allow a specific script to be run.
-		const nonce = getNonce();
+    // Use a nonce to only allow a specific script to be run.
+    const nonce = getNonce();
 
     return `<!DOCTYPE html>
 			<html lang="en">
@@ -85,13 +88,12 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
           <span class="error" id="name-error">Please enter a valid name</span>
       
           <br />
-      
+
           <span class="row">
             <label for="path">Path</label>
             <input readonly name="path" placeholder="Path"  value="${path}" />
-            <button>Browse</button>
+            <button id="browse">Browse</button>
           </span>
-          <span class="error" id="path-error"></span>
       
           <br />
       
@@ -106,7 +108,6 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
               <label for="expo">Expo</label>
             </span>
           </span>
-          <span class="error" id="cli-error">Selected CLI is not installed</span>
       
           <br />
       
@@ -128,10 +129,10 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
 }
 
 function getNonce() {
-	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	for (let i = 0; i < 32; i++) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
-	return text;
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < 32; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
 }

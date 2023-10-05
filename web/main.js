@@ -8,6 +8,8 @@
 
   const form = document.forms['create-project-form'];
   const submitButton = document.getElementById('submit');
+  const browseButton = document.getElementById('browse');
+
 
   submitButton?.addEventListener('click', (e) => {
     e.preventDefault();
@@ -29,6 +31,28 @@
         name, path, useExpo, skipInstall
       }),
     });
+  });
+
+  browseButton?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const path = form['path'].value;
+
+    vscode.postMessage({
+      command: 'browse',
+      text: path
+    });
+  });
+
+  window.addEventListener('message', (e) => {
+    switch (e.data.type) {
+      case 'browsedPath':
+        form['path'].value = e.data.path;
+        break;
+    
+      default:
+        console.log('Unknown type', e);
+        break;
+    }
   });
 
 }());
