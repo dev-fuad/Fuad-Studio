@@ -59,12 +59,6 @@
         {
           "type": "webview",
           "id": "fuadStudio-newProject",
-          "name": "New Project",
-          "icon": "assets/Fuad's Studio.svg",
-          "contextualTitle": "Fuad's RN Studio"
-        },
-        {
-          "id": "fuadStudio-template",
           "name": "Fuad's RN Studio",
           "icon": "assets/Fuad's Studio.svg",
           "contextualTitle": "Fuad's RN Studio"

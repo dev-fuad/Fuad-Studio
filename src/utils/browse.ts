@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-const onBrowse = (view: vscode.WebviewView) => {
+const onBrowse = (view: vscode.WebviewView | vscode.WebviewPanel) => {
   const options: vscode.OpenDialogOptions = {
     canSelectFolders: true,
     canSelectFiles: false,

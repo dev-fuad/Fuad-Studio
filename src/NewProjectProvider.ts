@@ -1,22 +1,61 @@
 import * as vscode from 'vscode';
+import ExtensionContext from './utils/ExtensionContext';
 import onBrowse from './utils/browse';
+import getNonce from './utils/getNonce';
 import initiateRNProject from './utils/initiateRNProject';
+
+function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
+  return {
+    // Enable javascript in the webview
+    enableScripts: true,
+
+    // And restrict the webview to only loading content from our extension's `media` directory.
+    localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
+  };
+}
 
 export default class NewProjectProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'fuadStudio-newProject';
 
-  private _view?: vscode.WebviewView;
+  public static currentPanel: NewProjectProvider | undefined;
 
   constructor(
     private readonly _extensionUri: vscode.Uri,
-  ) { }
+    private readonly _panel: vscode.WebviewPanel | null,
+  ) {
+    if (!_panel) {
+      return;
+    }
+
+    _panel.title = "Create Project";
+    this.resolveWebviewView(_panel);
+  }
+
+  public static createOrShow() {
+    const column = vscode.window.activeTextEditor
+      ? vscode.window.activeTextEditor.viewColumn
+      : undefined;
+
+    // If we already have a panel, show it.
+    if (NewProjectProvider.currentPanel?._panel) {
+      NewProjectProvider.currentPanel._panel.reveal(column);
+      return;
+    }
+
+    // Otherwise, create a new panel.
+    const panel = vscode.window.createWebviewPanel(
+      NewProjectProvider.viewType,
+      'Create Project',
+      column || vscode.ViewColumn.One,
+      getWebviewOptions(ExtensionContext.context.extensionUri),
+    );
+
+    NewProjectProvider.currentPanel = new NewProjectProvider(ExtensionContext.context.extensionUri, panel);
+  }
 
   resolveWebviewView(
-    webviewView: vscode.WebviewView,
-    context: vscode.WebviewViewResolveContext<unknown>,
-    token: vscode.CancellationToken
+    webviewView: vscode.WebviewView | vscode.WebviewPanel
   ): void | Thenable<void> {
-    this._view = webviewView;
 
     webviewView.webview.options = {
       // Allow scripts in the webview
@@ -79,11 +118,11 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
 				<title>Fuad's RN Studio</title>
 			</head>
 			<body>
+        <form name="create-project-form">
         <h2>New Project</h2>
 
         <br />
     
-        <form name="create-project-form">
           <input name="name" placeholder="Project Name" required />
           <span class="error" id="name-error">Please enter a valid name</span>
       
@@ -126,13 +165,4 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
 			</body>
 			</html>`;
   }
-}
-
-function getNonce() {
-  let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let i = 0; i < 32; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
 }

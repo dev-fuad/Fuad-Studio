@@ -2,6 +2,11 @@ body {
   background-color: transparent;
 }
 
+form {
+  margin: 0 auto;
+  max-width: 400px;
+}
+
 .row {
   display: flex;
   flex-direction: row;

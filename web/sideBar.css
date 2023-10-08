@@ -1,0 +1,6 @@
+button {
+  background-color: var(--vscode-sideBar-background);
+  color: var(--vscode-sideBar-foreground);
+  border: 1px solid var(--vscode-sideBar-foreground);
+  border-radius: 20px;
+}
