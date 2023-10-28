@@ -1,0 +1,25 @@
+{
+  "src": {
+    "App.ts": "",
+    "components": {
+      "index.ts": ""
+    },
+    "modules": {
+      "Home": {
+        "HomeScreen.ts": ""
+      }
+    },
+    "navigation": {
+      "AppNavigation.ts": ""
+    },
+    "store": {
+      "index.ts": ""
+    },
+    "constants": {
+      "index.ts": ""
+    },
+    "assets": {
+      "index.ts": ""
+    }
+  }
+}

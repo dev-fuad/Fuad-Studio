@@ -124,7 +124,7 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
         <br />
     
           <input name="name" placeholder="Project Name" required />
-          <span class="error" id="name-error">Please enter a valid name</span>
+          <span class="error hide" id="name-error">Please enter a valid name</span>
       
           <br />
 
@@ -153,6 +153,20 @@ export default class NewProjectProvider implements vscode.WebviewViewProvider {
           <span class="row">
             <input type="checkbox" name="skipInstall" />
             <label for="skipInstall">Skip installing dependencies</label>
+          </span>
+      
+          <br />
+      
+          <span class="row">
+            <input type="checkbox" name="useTemplate" />
+            <label for="useTemplate">Use Template</label>
+          </span>
+          <span class="hide" id="selectTemplate">
+            <span class="row">
+              <input readonly value="default" />
+              <button id="template">Browse</button>
+            </span>
+            <p>You can create your template in <a>this</a> format.</p>
           </span>
       
           <br />

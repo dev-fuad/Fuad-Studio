@@ -40,9 +40,12 @@ form {
 }
 
 .error {
-  display: none;
   color: orangered;
   font-size: smaller;
+}
+
+.hide {
+  display: none;
 }
 
 .show {

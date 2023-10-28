@@ -3,15 +3,18 @@ import * as vscode from 'vscode';
 import TerminalWrapper from './dbux/_DBux_ TerminalWrapper';
 import { getNormalisedPath } from './getPath';
 import getNodeVersion from './getNodeVersion';
+import spitTemplate from './spitTemplate';
+import * as Template from '../templates/project.json';
 
 type Params = {
   name: string;
   path: string;
   useExpo: boolean;
   skipInstall: boolean;
+  useTemplate: boolean;
 };
 
-const initiateRNProject = async ({ name, path, useExpo, skipInstall }: Params) => {
+const initiateRNProject = async ({ name, path, useExpo, skipInstall, useTemplate }: Params) => {
   
   // Get project name
   // const name = await vscode.window.showInputBox({ title: 'Project Name' });
@@ -42,6 +45,8 @@ const initiateRNProject = async ({ name, path, useExpo, skipInstall }: Params) =
 
   try {
     const normPath = await getNormalisedPath(`${path}/${name}`);
+
+    await spitTemplate(Template, normPath);
     
     const uri = vscode.Uri.file(normPath);
     await vscode.commands.executeCommand('vscode.openFolder', uri, { forceNewWindow: false });

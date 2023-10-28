@@ -17,6 +17,7 @@
     const path = form['path'].value;
     const useExpo = form['cli'].value === 'expo';
     const skipInstall = form['skipInstall'].checked;
+    const useTemplate = form['useTemplate'].checked;
 
     const nameError = document.getElementById('name-error');
     if (name === '') {
@@ -28,7 +29,7 @@
     vscode.postMessage({
       command: 'create',
       text: JSON.stringify({
-        name, path, useExpo, skipInstall
+        name, path, useExpo, skipInstall, useTemplate
       }),
     });
   });
@@ -43,12 +44,21 @@
     });
   });
 
+  form['useTemplate'].addEventListener('change', function () {
+    const selectTemplate = document.getElementById('selectTemplate');
+    if (this.checked) {
+      selectTemplate?.classList.remove('hide');
+    } else {
+      selectTemplate?.classList.add('hide');
+    }
+  });
+
   window.addEventListener('message', (e) => {
     switch (e.data.type) {
       case 'browsedPath':
         form['path'].value = e.data.path;
         break;
-    
+
       default:
         console.log('Unknown type', e);
         break;
